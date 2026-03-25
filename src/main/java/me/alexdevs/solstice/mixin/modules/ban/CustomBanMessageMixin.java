@@ -18,7 +18,7 @@ import java.net.SocketAddress;
 @Mixin(PlayerList.class)
 public abstract class CustomBanMessageMixin {
     @Inject(method = "canPlayerLogin", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
-    public void solstice$formatBanMessage(SocketAddress address, GameProfile profile, CallbackInfoReturnable<Component> cir, @Local UserBanListEntry bannedPlayerEntry, @Local MutableComponent mutableText) {
+    public void solstice$formatBanMessage(SocketAddress address, com.mojang.authlib.GameProfile profile, CallbackInfoReturnable<Component> cir, @Local UserBanListEntry bannedPlayerEntry, @Local MutableComponent mutableText) {
         try {
             var reasonText = BanMessageFormatter.format(profile, bannedPlayerEntry);
             cir.setReturnValue(reasonText);

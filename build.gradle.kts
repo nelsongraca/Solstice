@@ -1,6 +1,6 @@
 import com.modrinth.minotaur.dependencies.ModDependency
 plugins {
-    id("fabric-loom") version "1.9-SNAPSHOT"
+    id("fabric-loom") version "1.14-SNAPSHOT"
     id("maven-publish")
     id("com.modrinth.minotaur") version "2.+"
     id("dev.kikugie.stonecutter")
@@ -103,5 +103,15 @@ publishing {
                 password = System.getenv("MAVEN_PASSWORD")
             }
         }
+    }
+}
+
+stonecutter {
+    replacements.string(current.parsed >= "1.21.11") {
+//        replace("player.level()", "player.serverLevel()")
+//        replace("sourcePlayer.serverLevel()", "sourcePlayer.level()")
+        replace("player.getServer()", "player.level().getServer()")
+        replace("sourcePlayer.getServer()", "sourcePlayer.level().getServer()")
+        replace("dimension().location()", "dimension().identifier()")
     }
 }
