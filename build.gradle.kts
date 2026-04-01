@@ -1,8 +1,6 @@
-import com.modrinth.minotaur.dependencies.ModDependency
 plugins {
     id("fabric-loom") version "1.14-SNAPSHOT"
     id("maven-publish")
-    id("com.modrinth.minotaur") version "2.+"
     id("dev.kikugie.stonecutter")
 }
 version = "${property("mod_version")}+${property("minecraft_version")}"
@@ -79,14 +77,6 @@ tasks.jar {
         rename { "${it}_${base.archivesName.get()}" }
     }
 }
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = "uIvrDZas"
-    uploadFile = tasks["remapJar"]
-    gameVersions = listOf(property("minecraft_version") as String)
-    loaders = listOf("fabric")
-    dependencies = listOf(ModDependency("P7dR8mSH", "required"))
-}
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -96,8 +86,8 @@ publishing {
     }
     repositories {
         maven {
-            name = "AlexDevsRepo"
-            url = uri("https://maven.alexdevs.me/releases")
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/nelsongraca/Solstice")
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
@@ -108,8 +98,6 @@ publishing {
 
 stonecutter {
     replacements.string(current.parsed >= "1.21.11") {
-//        replace("player.level()", "player.serverLevel()")
-//        replace("sourcePlayer.serverLevel()", "sourcePlayer.level()")
         replace("player.getServer()", "player.level().getServer()")
         replace("sourcePlayer.getServer()", "sourcePlayer.level().getServer()")
         replace("dimension().location()", "dimension().identifier()")
